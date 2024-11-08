@@ -1,0 +1,78 @@
+variables:
+  DOCKER_IMAGE: ${CI_DOCKER_REGISTRY}/esp-env-v5.3:1
+  BASE_FRAMEWORK_PATH: "$CI_PROJECT_DIR/esp-idf"
+  BASE_FRAMEWORK: $IDF_REPOSITORY
+  IDF_VERSION_TAG: v5.3
+  IDF_TAG_FLAG: false
+
+.update_source: &update_source
+  - source ${CI_PROJECT_DIR}/tools/ci/utils.sh
+  - add_gitlab_ssh_keys
+  - git submodule update --init --recursive
+  - git clone $BASE_FRAMEWORK --depth 1
+  - cd $BASE_FRAMEWORK_PATH
+  - git submodule update --init
+  - git log -2
+  - fetch_idf_branch ${IDF_VERSION_TAG}
+  - common_before_scripts
+  - setup_tools_and_idf_python_venv
+  - set_env_variable
+
+.build_template: &build_template
+  stage: build
+  image: $DOCKER_IMAGE
+  tags:
+    - multimedia_build
+  before_script:
+    - *update_source
+
+.build_gmf_core:
+  <<: *build_template
+  artifacts:
+    paths:
+      - "${CI_PROJECT_DIR}/gmf_core/test_apps/build*/size.json"
+      - "${CI_PROJECT_DIR}/gmf_core/test_apps/build*/build_log.txt"
+      - "${CI_PROJECT_DIR}/gmf_core/test_apps/build*/*.bin"
+      - "${CI_PROJECT_DIR}/gmf_core/test_apps/build*/*.elf"
+      - "${CI_PROJECT_DIR}/gmf_core/test_apps/build*/flasher_args.json"
+      - "${CI_PROJECT_DIR}/gmf_core/test_apps/build*/flash_project_args"
+      - "${CI_PROJECT_DIR}/gmf_core/test_apps/build*/config/sdkconfig.json"
+      - "${CI_PROJECT_DIR}/gmf_core/test_apps/build*/sdkconfig"
+      - "${CI_PROJECT_DIR}/gmf_core/test_apps/build*/bootloader/*.bin"
+      - "${CI_PROJECT_DIR}/gmf_core/test_apps/build*/partition_table/*.bin"
+      - "${CI_PROJECT_DIR}/gmf_core/test_apps/*.py"
+    expire_in: 4 days
+  script:
+    - run_cmd python ${BASE_FRAMEWORK_PATH}/tools/ci/ci_build_apps.py ${CI_PROJECT_DIR}/gmf_core -vv -t $IDF_TARGET --pytest-apps
+
+pytest_ut_gmf_core_esp32:
+  extends:
+    - .rules:build:protected-merge-requests-pipeline
+    - .build_gmf_core
+  variables:
+    IDF_VERSION_TAG: v5.3
+    IDF_TARGET: esp32
+
+.pytest_ut_gmf_core_esp32c3:
+  extends:
+    - .rules:build:protected-merge-requests-pipeline
+    - .build_gmf_core
+  variables:
+    IDF_VERSION_TAG: v5.3
+    IDF_TARGET: esp32c3
+
+pytest_ut_gmf_core_esp32s3:
+  extends:
+    - .rules:build:protected-merge-requests-pipeline
+    - .build_gmf_core
+  variables:
+    IDF_VERSION_TAG: v5.3
+    IDF_TARGET: esp32s3
+
+pytest_ut_gmf_core_esp32p4:
+  extends:
+    - .rules:build:protected-merge-requests-pipeline
+    - .build_gmf_core
+  variables:
+    IDF_VERSION_TAG: v5.3
+    IDF_TARGET: esp32p4
