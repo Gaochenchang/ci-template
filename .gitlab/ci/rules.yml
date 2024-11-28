@@ -57,19 +57,16 @@
   if: '($IDF_VERSION_TAG == "v5.0.4" || $IDF_VERSION_TAG == "v5.0")'
   variables:
     IMAGE: "$MULTIMEDIA_DOCKER_REGISTRY/env_v5.0:4"
-    IDF_PATCH: idf_v5.0_freertos.patch
 
 .if-idf-version-tag-v5-1: &if-idf-version-tag-v5-1
   if: '$IDF_VERSION_TAG == "v5.1"'
   variables:
       IMAGE: "$CI_DOCKER_REGISTRY/esp-env-v5.1:1"
-      IDF_PATCH: idf_v5.1_freertos.patch
 
 .if-idf-version-tag-v5-2: &if-idf-version-tag-v5-2
   if: '$IDF_VERSION_TAG == "v5.2"'
   variables:
       IMAGE: "$CI_DOCKER_REGISTRY/esp-env-v5.2:2"
-      IDF_PATCH: idf_v5.2_freertos.patch
 
 .if-idf-version-tag-v5-3: &if-idf-version-tag-v5-3
   if: '$IDF_VERSION_TAG == "v5.3"'

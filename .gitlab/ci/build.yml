@@ -5,8 +5,9 @@ variables:
   IDF_VERSION_TAG: v5.3
   IDF_TAG_FLAG: false
 
-.build_gmf_core:
-  <<: *build_template
+.build:
+  extends:
+    - build_template
   artifacts:
     paths:
       - "${CI_PROJECT_DIR}/gmf_core/test_apps/build*/size.json"
@@ -24,34 +25,34 @@ variables:
   script:
     - run_cmd python ${BASE_FRAMEWORK_PATH}/tools/ci/ci_build_apps.py ${CI_PROJECT_DIR}/gmf_core -vv -t $IDF_TARGET --pytest-apps
 
-pytest_ut_gmf_core_esp32:
+pytest_ut_esp32:
   extends:
     - .rules:build:protected-merge-requests-pipeline
-    - .build_gmf_core
+    - .build
   variables:
     IDF_VERSION_TAG: v5.3
     IDF_TARGET: esp32
 
-.pytest_ut_gmf_core_esp32c3:
+.pytest_ut_esp32c3:
   extends:
     - .rules:build:protected-merge-requests-pipeline
-    - .build_gmf_core
+    - .build
   variables:
     IDF_VERSION_TAG: v5.3
     IDF_TARGET: esp32c3
 
-pytest_ut_gmf_core_esp32s3:
+pytest_ut_esp32s3:
   extends:
     - .rules:build:protected-merge-requests-pipeline
-    - .build_gmf_core
+    - .build
   variables:
     IDF_VERSION_TAG: v5.3
     IDF_TARGET: esp32s3
 
-pytest_ut_gmf_core_esp32p4:
+pytest_ut_esp32p4:
   extends:
     - .rules:build:protected-merge-requests-pipeline
-    - .build_gmf_core
+    - .build
   variables:
     IDF_VERSION_TAG: v5.3
     IDF_TARGET: esp32p4
