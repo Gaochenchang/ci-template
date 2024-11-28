@@ -24,6 +24,16 @@ function add_github_ssh_keys() {
   echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >>~/.ssh/config
 }
 
+function push_to_github() {
+  if [ -n "${CI_COMMIT_TAG}" ]; then
+      # for tags
+      git push github "${CI_COMMIT_TAG}"
+  else
+      # for branches
+      git push github "${CI_COMMIT_SHA}:refs/heads/${CI_COMMIT_REF_NAME}"
+  fi
+}
+
 function set_env_variable() {
   export LDGEN_CHECK_MAPPING=
   export PEDANTIC_CFLAGS="-w"
