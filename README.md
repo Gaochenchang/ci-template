@@ -35,4 +35,6 @@ ci-template
     - GITLAB_SSH_SERVER
     - IDF_PATH
     - IDF_REPOSITORY
+    - TARGET_GITHUB_REPO
+    - GH_PUSH_KEY
 3. 为您的项目配置 Runner。 在右侧 `Settings` -> `CI/CD` -> `Runners` 中使能可用的 Runner。

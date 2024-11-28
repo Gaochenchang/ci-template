@@ -75,7 +75,6 @@
   if: '$IDF_VERSION_TAG == "v5.3"'
   variables:
       IMAGE: "$CI_DOCKER_REGISTRY/esp-env-v5.3:1"
-      IDF_PATCH: idf_v5.3_freertos.patch
 
 .rules:build:unit-test:
   rules:

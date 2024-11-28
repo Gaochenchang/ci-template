@@ -2,6 +2,7 @@ stages:
   - pre_check
   - build
   - target_test
+  - deploy
 
 before_script:
   - source ${CI_PROJECT_DIR}/tools/ci/utils.sh
@@ -11,3 +12,4 @@ include:
   - '.gitlab/ci/rules.yml'
   - '.gitlab/ci/pre_check.yml'
   - '.gitlab/ci/build.yml'
+  - '.gitlab/ci/deploy.yml'
