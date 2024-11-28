@@ -4,6 +4,14 @@ stages:
   - target_test
   - deploy
 
+variables:
+  GIT_STRATEGY: clone
+  GET_SOURCES_ATTEMPTS: "10"
+  ARTIFACT_DOWNLOAD_ATTEMPTS: "10"
+  GIT_SUBMODULE_STRATEGY: none
+  IDF_SKIP_CHECK_SUBMODULES: 1
+  GIT_DEPTH: 1
+
 before_script:
   - source ${CI_PROJECT_DIR}/tools/ci/utils.sh
   - add_gitlab_ssh_keys
