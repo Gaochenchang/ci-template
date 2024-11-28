@@ -7,7 +7,7 @@ variables:
 
 .build:
   extends:
-    - build_template
+    - .build_template
   artifacts:
     paths:
       - "${CI_PROJECT_DIR}/gmf_core/test_apps/build*/size.json"
